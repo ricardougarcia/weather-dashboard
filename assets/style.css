@@ -1,0 +1,62 @@
+* {
+  border-style: solid;
+  border-style: rgb(195, 0, 255);
+  border-style: 1px;
+}
+body {
+}
+
+header {
+}
+main {
+  display: flex;
+}
+aside {
+  display: flex;
+  flex-wrap: wrap;
+  width: 35%;
+}
+#search {
+  width: 100%;
+}
+#buttons {
+  display: flex;
+  flex-wrap: wrap;
+}
+#austin {
+  width: 100%;
+}
+#chicago {
+  width: 100%;
+}
+#newyork {
+  width: 100%;
+}
+#right-side {
+  display: flex;
+  flex-wrap: wrap;
+  width: 65%;
+}
+#weather-display {
+  width: 100%;
+}
+#five-day {
+  width: 100%;
+  flex-direction: row;
+}
+
+#day1 {
+  width: 20%;
+}
+#day2 {
+  width: 20%;
+}
+#day3 {
+  width: 20%;
+}
+#day4 {
+  width: 20%;
+}
+#day5 {
+  width: 20%;
+}
