@@ -19,6 +19,9 @@ aside {
 #search {
   width: 100%;
 }
+#button-addon2 {
+  flex-basis: 100%;
+}
 #buttons {
   display: flex;
   flex-wrap: wrap;
@@ -43,6 +46,7 @@ aside {
 #five-day {
   width: 100%;
   flex-direction: row;
+  display: flex;
 }
 
 #day1 {
