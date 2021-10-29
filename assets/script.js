@@ -2,7 +2,7 @@ console.log(this);
 
 // DEPENDENCIES-----------------
 var search = document.getElementById("search").value;
-// var APIKey = "d57558568af97f24e4322a8470d63a11";
+var APIKey = "d57558568af97f24e4322a8470d63a11";
 // var city;
 // var queryURL =
 //   "http://api.openweathermap.org/data/2.5/weather?q=" +
@@ -28,16 +28,43 @@ var li2 = document.getElementById("li2");
 var li3 = document.getElementById("li3");
 var li4 = document.getElementById("li4");
 var current = document.getElementById("current");
-
+var aside = document.getElementById("aside");
+var searchHistory = JSON.parse(localStorage.getItem("search")) || [];
 // FUNCTIONS--------------------
-// user submits city name and it stores to local storage
-button.addEventListener("click", function () {
-  var search = document.getElementById("search");
-  localStorage.setItem("search", search.value);
-  console.log(search.value);
-});
 
+// user submits city name and it stores to local storage
+
+function userSearch(event) {
+  console.log(event);
+  var search;
+  if (event.target.id === "button-addon2") {
+    search = document.getElementById("search").value;
+    searchHistory.push(search);
+    localStorage.setItem("search", JSON.stringify(searchHistory));
+    console.log(search);
+    geo(search);
+  } else if (event.target.localName === "button") {
+    search = event.target.textContent;
+    console.log(search);
+    geo(search);
+  }
+}
 // get from local storage ---- recent searches?
+function geo(search) {
+  var queryURL =
+    "http://api.openweathermap.org/geo/1.0/direct?q=" +
+    search +
+    "&appid=" +
+    APIKey;
+  fetch(queryURL)
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      console.log(data);
+      getApi(data[0].lat, data[0].lon);
+    });
+}
 
 // current time
 function displayTime() {
@@ -51,26 +78,19 @@ displayTime();
 // run query for weather based off city
 
 // Current API function, working on new API that includes multiple cities
-function getApi() {
+function getApi(lat, lon) {
   var queryURL =
-    "https://api.openweathermap.org/data/2.5/onecall?lat=33.75&lon=-84.38&exclude=hourly&units=imperial&appid=d57558568af97f24e4322a8470d63a11";
+    "https://api.openweathermap.org/data/2.5/onecall?lat=" +
+    lat +
+    "&lon=" +
+    lon +
+    "&exclude=hourly&units=imperial&appid=d57558568af97f24e4322a8470d63a11";
   fetch(queryURL)
     .then(function (response) {
       return response.json();
     })
     .then(function (data) {
       console.log(data);
-      // for loop here to run through the data for each item
-      for (var i = 0; i < data.length; i++) {
-        var current = data[i].current.weather[0].main;
-        var li1 = data[i].current.temp;
-        var li2 = data[i].current.wind_speed;
-        var li3 = data[i].current.humidity;
-        var li4 = data[i].current.uvi;
-
-        // console.log(current);
-        // console.log(li1);
-      }
       current.textContent = "today is:" + data.current.weather[0].main;
       li1.textContent = "Temp: " + data.current.temp + " fahrenheit";
       li2.textContent = "Wind speed: " + data.current.wind_speed + " mph";
@@ -78,8 +98,6 @@ function getApi() {
       li4.textContent = "UV Index: " + data.current.uvi;
     });
 }
-
-getApi();
 
 // // Test API function
 // function getApi() {
@@ -133,3 +151,4 @@ getApi();
 // user clicks city specific button Austin
 // user clicks city specific button Chicago
 // user clicks city specific button New York
+aside.addEventListener("click", userSearch);
